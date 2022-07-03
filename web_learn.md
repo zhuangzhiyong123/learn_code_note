@@ -65,6 +65,11 @@
   | \<q>          | 定义短的引用语     |
   | \<cite>       | 定义引用、引证     |
   | \<dfn>        | 定义一个定义项目。 |
+- \<head>元素：包含了所有的头部标签元素。在 <head>元素中你可以插入脚本（scripts）, 样式文件（CSS），及各种meta信息。可以添加在头部区域的元素标签为: \<title>, \<style>, \<meta>, \<link>, \<script>, \<noscript> 和 \<base>。
+- \<base> 元素：描述了基本的链接地址/链接目标，该标签作为HTML文档中所有的链接标签的默认链接。如：\<base href="http://www.runoob.com/images/" target="_blank">,指定了页面上所有链接的默认 URL,链接会在新窗口打开.
+- \<style> 元素：定义了HTML文档的样式文件引用地址。在\<style> 元素中也可以直接添加样式来渲染 HTML 文档。\<style type="text/css">body {background-color:yellow}p {color:blue}\</style>。
+- \<meta> 元素:描述了一些基本的元数据。元数据也不显示在页面上，但会被浏览器解析。META 元素通常用于指定网页的描述，关键词，文件的最后修改时间，作者，和其他元数据。元数据可以使用于浏览器（如何显示内容或重新加载页面），搜索引擎（关键词），或其他Web服务。\<meta> 一般放置于 \<head> 区域
+- 使用 \<span> 元素对文本中的一部分进行着色：\<p>我的母亲有 \<span style="color:blue">蓝色\</span> 的眼睛。\</p>
 ---
 ### HTML元素
 HTML 文档由 HTML 元素定义。
@@ -98,7 +103,96 @@ HTML 文档由 HTML 元素定义。
 
 - 查看完整的HTML属性列表:  [HTML 标签参考手册](https://www.runoob.com/tags/html-reference.html)。
 - 更多标准属性说明： [HTML 标准属性参考手册](https://www.runoob.com/tags/ref-standardattributes.html)。
+
+### HTML表格
+表格由 \<table> 标签来定义。每个表格均有若干行（由 \<tr> 标签定义），每行被分割为若干单元格（由 \<td> 标签定义）。字母 td 指表格数据（table data），即数据单元格的内容。数据单元格可以包含文本、图片、列表、段落、表单、水平线、表格等等。表格的表头使用 \<th> 标签进行定义。大多数浏览器会把表头显示为粗体居中的文本。border为边框属性，若不设置则默认无边框。
+- \<table border="1">
+  \<tr>
+        \<th>Header 1\</th>
+        \<th>Header 2\</th>
+  \</tr>
+   \<tr>
+        \<td>row 1, cell 1\</td>
+        \<td>row 1, cell 2\</td>
+    \</tr>
+    \<tr>
+        \<td>row 2, cell 1\</td>
+        \<td>row 2, cell 2\</td>
+    \</tr>
+\</table>
+- 更多细节参见[菜鸟教程](https://www.runoob.com/html/html-tables.html)
   
+### HTML列表
+无序列表和有序列表，参见[菜鸟教程](https://www.runoob.com/html/html-lists.html)
+
+### HTML布局
+大多数网站会把内容安排到多个列中（就像杂志或报纸那样）。
+大多数网站可以使用\<div> 或者 \<table> 元素来创建多列。CSS 用于对元素进行定位，或者为页面创建背景以及色彩丰富的外观。
+- 更多细节参见[菜鸟教程](https://www.runoob.com/html/html-layouts.html)
+  
+### HTML表单
+HTML 表单用于收集用户的输入信息。比如：文本域（textarea）、下拉列表（select）、单选框（radio-buttons）、复选框（checkbox） 等。
+HTML 表单表示文档中的一个区域，此区域包含交互控件，将用户收集到的信息发送到 Web 服务器。
+- 实例-一个普通输入框和一个秘密输入框：\<form action="">
+Username: \<input type="text" name="user">\<br>
+Password: \<input type="password" name="password">
+\</form>
+- 多数情况下被用到的表单标签是输入标签 \<input>。输入类型是由 type 属性定义。
+- \<input type="radio"> 标签定义了表单的单选框选项:\<form action="">
+\<input type="radio" name="sex" value="male">男\<br>
+\<input type="radio" name="sex" value="female">女
+\</form>
+- \<input type="checkbox"> 定义了复选框。
+- \<input type="submit"> 定义了提交按钮。当用户单击确认按钮时，表单的内容会被传送到服务器。表单的动作属性 action 定义了服务端的文件名。action 属性会对接收到的用户输入数据进行相关的处理:\<form name="input" action="html_form_action.php" method="get">
+Username: \<input type="text" name="user">
+\<input type="submit" value="Submit">
+\</form>
+- 更多细节参见[菜鸟教程](https://www.runoob.com/html/html-forms.html)
+  
+### HTML框架
+通过使用框架，可以在同一个浏览器窗口中显示不止一个页面。
+
+### HTML颜色
+HTML 颜色由红色、绿色、蓝色混合而成。由一个十六进制符号来定义，这个符号由红色、绿色和蓝色的值组成（RGB）。
+每种颜色的最小值是0（十六进制：#00）。最大值是255（十六进制：#FF）。#FF0000对应	rgb(255,0,0)
+- 141个颜色名称是在HTML和CSS颜色规范定义的（17标准颜色，再加124）。17标准颜色：黑色，蓝色，水，紫红色，灰色，绿色，石灰，栗色，海军，橄榄，橙，紫，红，白，银，蓝绿色，黄色。详见[菜鸟教程](https://www.runoob.com/html/html-colornames.html)。
+
+### HTML脚本
+JavaScript 使 HTML 页面具有更强的动态和交互性。
+- 使用 \<noscript> 标签应对不支持脚本或禁用脚本的浏览器。
+
+### HTML速查笔记
+常用标签用法，见[菜鸟教程](https://www.runoob.com/html/html-quicklist.html)
+标签缩写及全称，见[菜鸟教程](https://www.runoob.com/html/html-tag-name.html)
+
+### HTML媒体
+  音频视频播放，见[菜鸟教程](https://www.runoob.com/html/html-media.html)
+
+### 简单css
+CSS (Cascading Style Sheets) 是用于渲染HTML元素标签的样式。
+CSS 可以通过以下方式添加到HTML中:
+- 内联样式- 在HTML元素中使用"style" 属性
+  -  当特殊的样式需要应用到个别元素时，就可以使用内联样式。 使用内联样式的方法是在相关的标签中使用样式属性。样式属性可以包含任何 CSS 属性。
+  - 举例：
+  1、改变段落的颜色和左外边距。\<p style="color:blue;margin-left:20px;">这是一个段落。\</p>
+  2、背景色属性（background-color）:\<body style="background-color:yellow;">\<h2 style="background-color:red;">这是一个标题\</h2>\</body>
+  3、使用font-family（字体），color（颜色），和font-size（字体大小）属性来定义字体的样式:\<p style="font-family:arial;color:red;font-size:20px;">一个段落。\</p>
+  4、使用 text-align（文字对齐）属性指定文本的水平与垂直对齐方式：\<h1 style="text-align:center;">居中对齐的标题\</h1>
+
+- 内部样式表 -在HTML文档头部 \<head> 区域使用\<style> 元素 来包含CSS
+  - 当单个文件需要特别样式时，就可以使用内部样式表。可以在\<head> 部分通过 \<style>标签定义内部样式表。
+  - 举例：\<head>
+\<style type="text/css">
+body {background-color:yellow;}
+p {color:blue;}
+\</style>
+\</head>
+- 外部引用 - 使用外部 CSS 文件
+  - 当样式需要被应用到很多页面的时候，外部样式表将是理想的选择。使用外部样式表，就可以通过更改一个文件来改变整个站点的外观。
+  - 举例：\<head>
+\<link rel="stylesheet" type="text/css" href="mystyle.css">
+\</head>
+
 ---
 ## CSS
 
