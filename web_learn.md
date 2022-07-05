@@ -1,5 +1,8 @@
 [TOC]
 # web开发学习
+
+---
+---
 ---
 ## HTML
 是一种描述网页的超文本标记语言。标记语言即用**标记标签**和文本内容共同组成文档。即学习如何用特定的标记标签使文本呈现特定的形式。文件的保存格式为.htm或.html，两者无区别，建议统一用.html。
@@ -194,7 +197,74 @@ p {color:blue;}
 \</head>
 
 ---
+---
 ## CSS
 
 ---
+---
 ## Javascript
+
+---
+---
+## flask
+flask 是使用 Python 编写的 Web 微框架。Web 框架可以让我们不用关心底层的请求响应处理，更方便高效地编写 Web 程序。因为 Flask 核心简单且易于扩展，所以被称作微框架。Flask 有两个主要依赖，一个是 WSGI (Web Server Gateway Interface, Web 服务器网关接口）工具集 Werkzeug (http: //werkzeug.pocoo.org ），另一个是 Jinja2 模板引擎 http: //jinja.pocoo.org 。Flask 只保留了 Web 开发的核心功能，其他的功能都由外部扩展来实现。以下内容主要学习自《Flask Web 开发实战：入门、进阶与原理解析 (李辉) 》。
+
+---
+### flask基础
+#### 一、搭建安装环境
+- Pipenv工作流
+  - 安装Pipenv包
+  Pipenv 是基于pip的Python包管理工具，是pip、pipfile、Virtualenv的结合体，它让包安装、包依赖管理和虚拟环境管理更加方便，使用它可以实现高效的Python项目开发工作流。
+  - 创建虚拟环境
+  通过创建虚拟环境，可以拥有一个独立的 Python 解释器环境，这样做的好处是可以为每个项目创建独立的 Python 解释器环境，因为不同的项目常常会依赖不同版本的库或 Python 版本 使用虚拟环境可以保待全局 Python 解释器环境的干净，避免包和版本的混乱，并且可以方便地区分和记录每个项目的依赖，以便在新环镜复现依赖环境。
+  - Pipfile管理依赖包
+- 安装flask
+  - 在虚拟环境下运行pip install flask安装flask，同时被安装的还有五个依赖包。如下：
+    | 包名称       |                              说明                              | 资源                                                                                                                |
+    | ------------ | :------------------------------------------------------------: | ------------------------------------------------------------------------------------------------------------------- |
+    | Jinja2       |                          模板渲染引擎                          | 主页:http://jinja.pocoo.org/<br>源码:https://github.com/pallets/jinja<br>文档:http://jinja.pocoo.org/docs/          |
+    | MarkupSafe   |                    HTML字符转义(escape)工具                    | 主页:https://github.com/pallets/markupsafe                                                                          |
+    | Werkzeug     | WSGI工具集，处理请求与响应，内置WSGI开发服务器、调试器和重载器 | 主页:http://werkzeug.pocoo.org/<br>源码:https://github.com/pallets/werkzeug<br>文档:http://werkzeug.pocoo.org/docs/ |
+    | click        |                           命令行工具                           | 主页:https://github.com/pallets/click<br>文档:http://click.pocoo.org/docs/6/                                        |
+    | itsdangerous |                      提供各种加密签名功能                      | 主页:https://github.com/pallets/itsdangerous<br>文档:http://pythonhosted.org/itsdangerous/                          |
+ - 将编辑器中该项目的python解释器设置为虚拟环境中的python解释器。Windows系统的路径类似"C:\Users\zzy\.virtualenvs\helloflask-QZ2E7io1\Scripts\python.exe"
+#### 二、初识flask
+- 创建程序实例
+  - 用程序名创建flask类的实例：
+  from flask import Flask
+  app = Flask (\_\_name__)，之后便可直接用app实例来调用Flask类的属性和方法，如app.route()
+- 注册路由
+  - 在一个 Web 应用里，客户端和服务器上的 Flask 程序的交互可以简单概括为以下几步：
+   l、用户在浏览器输入 URL 访问某个资源
+   2、Flask 接收用户请求并分析请求的 URL
+   3、为这个 URL 找到对应的处理函数
+   4、执行函数并生成响应，返回给浏览器
+   5、浏览器接收并解析响应，将信息显示在页面
+  - 我们要做的只是建立处理请求的函数，并为其定义对应的 URL 规则，只需为函数附加 app.route() 装饰器，并传入 URL 则作为参数，我们就可以让 URL 与函数建立关联。这个过程我们称为注册路由 (ro ute) ，路由负责管理 URL 和函数之间的映射， 而这个函数则被称为视图函数 (view function)。
+  - @app.route('/')
+def index():
+    return '\<h1>Hello, World!\</h1>'
+  - 在这个程序里，app.route()装饰器把根地址/（为相对URL，即省略了域名）和index()函数绑定起来，当用户访问这个URL时就会触发index()函数。响应的主体就是呈现在浏览器窗口的 HTML 页面。
+  - URL(Uniform Resource Lacator，统一资源定位符）正是我们使用浏览器访问网页时输入的网址，比如 http://helloflask.com，简单来说，URL 就是指向网络中某个资源的地址。
+    - 可为一个视图函数绑定多个URL
+    - 可设置动态URL，使用<'变量名'> 。如：
+  @app.route('/greet', defaults={'name': 'Programmer'})
+  @app.route('/greet/\<name>')
+  def greet(name):
+      return '\<h1>Hello, %s!<\/h1>' % name
+  其中defaults={'name': 'Programmer'}设置name变量的默认值
+  #### 三、启动开发服务器
+  - Flask 内置了一个简单的开发服务器（由依赖包 Werkzeug 提供），足够在开发和测试阶段使用。flask run命令用来启动内置的开发服务器。如果程序的主模块是其它名称，比如 hello.py，那么需要设置环境变量FLASK_APP, 将包含程序实例的模块名赋值给这个变量，windows系统中使用命令set FLASK_APP=hello
+    - .flaskenv用来存储和 Flask 相关的公开环境变量 ，比如 FLASK_APP，.env 用来存储包含敏感信息的环境变量。在虚拟环境中安装python-dotenv来管理环境变量。.env包含敏感信息，不能上传到公开的git，可加入到.gitignore文件中。
+    - 使用pycharm运行服务器，需设置一个运行配置
+    - 更多启动服务器设置：flask run --host=o.o.o.o使服务器外部可见。flask run --port=8000 命令改变默认窗口。
+ - 自定义flask命令。如：
+   @app.cli.command()
+def hello():
+    """Just say hello."""
+    click.echo('Hello, Human!')
+ - 模板和静态文件。模板（template）和静态文件(static file）用来生成更加丰富的网页。模板即包含程序页面的 HTML 文件，静态文件是需要在 HTML 文件中加载的 CSS 和JavaScript 文件，以及图片、字体文件等资源文件。默认情况下，模板文件存放在项目根目录中的 templates 文件夹中，静态文件存放在 static 文件夹下。
+
+---
+### flask与http
+
