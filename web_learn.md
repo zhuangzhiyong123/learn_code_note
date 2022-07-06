@@ -17,6 +17,13 @@
 - \<body> 元素包含了可见的页面内容
 - \<h1> 元素定义一个大标题
 - \<p> 元素定义一个段落
+- \<ul> 定义无序列表，\<ol>则定义有序列表
+    \<ul>
+    \<li>Coffee\</li>
+    \<li>Tea\</li>
+    \<li>Milk\</li>
+    \</ul>
+- \<footer> 定义文档的页脚
 
 ---
 
@@ -207,7 +214,7 @@ p {color:blue;}
 ---
 ---
 ## flask
-flask 是使用 Python 编写的 Web 微框架。Web 框架可以让我们不用关心底层的请求响应处理，更方便高效地编写 Web 程序。因为 Flask 核心简单且易于扩展，所以被称作微框架。Flask 有两个主要依赖，一个是 WSGI (Web Server Gateway Interface, Web 服务器网关接口）工具集 Werkzeug (http: //werkzeug.pocoo.org ），另一个是 Jinja2 模板引擎 http: //jinja.pocoo.org 。Flask 只保留了 Web 开发的核心功能，其他的功能都由外部扩展来实现。以下内容主要学习自《Flask Web 开发实战：入门、进阶与原理解析 (李辉) 》。
+flask 是使用 Python 编写的 Web 微框架。Web 框架可以让我们不用关心底层的请求响应处理，更方便高效地编写 Web 程序。因为 Flask 核心简单且易于扩展，所以被称作微框架。Flask 有两个主要依赖，一个是 WSGI (Web Server Gateway Interface, Web 服务器网关接口）工具集 Werkzeug (http: //werkzeug.pocoo.org ），另一个是 Jinja2 模板引擎 http: //jinja.pocoo.org 。Flask 只保留了 Web 开发的核心功能，其他的功能都由外部扩展来实现。以下内容主要学习自《Flask Web 开发实战：入门、进阶与原理解析 (李辉) 》和《flask入门教程（李辉）》。
 
 ---
 ### flask基础
@@ -253,8 +260,9 @@ def index():
   def greet(name):
       return '\<h1>Hello, %s!<\/h1>' % name
   其中defaults={'name': 'Programmer'}设置name变量的默认值
+    - url_for()函数生成视图函数对应的url，第一个参数为视图函数名
   #### 三、启动开发服务器
-  - Flask 内置了一个简单的开发服务器（由依赖包 Werkzeug 提供），足够在开发和测试阶段使用。flask run命令用来启动内置的开发服务器。如果程序的主模块是其它名称，比如 hello.py，那么需要设置环境变量FLASK_APP, 将包含程序实例的模块名赋值给这个变量，windows系统中使用命令set FLASK_APP=hello
+  - Flask 内置了一个简单的开发服务器（由依赖包 Werkzeug 提供），足够在开发和测试阶段使用。flask run命令用来启动内置的开发服务器。如果程序的主模块是其它名称，比如 hello.py，那么需要设置**环境变量**FLASK_APP, 将包含程序实例的模块名赋值给这个变量，windows系统中使用命令**set FLASK_APP=hello**
     - .flaskenv用来存储和 Flask 相关的公开环境变量 ，比如 FLASK_APP，.env 用来存储包含敏感信息的环境变量。在虚拟环境中安装python-dotenv来管理环境变量。.env包含敏感信息，不能上传到公开的git，可加入到.gitignore文件中。
     - 使用pycharm运行服务器，需设置一个运行配置
     - 更多启动服务器设置：flask run --host=o.o.o.o使服务器外部可见。flask run --port=8000 命令改变默认窗口。
@@ -268,3 +276,86 @@ def hello():
 ---
 ### flask与http
 
+---
+### 模板
+#### jinja2——模板渲染引擎
+包含变量和运算逻辑的 HTML 或其他格式的文本叫做模板，执行这些变量替换和逻辑计算工作的过程被称为渲染。
+在模板里，需要添加特定的定界符将 Jinja2 语句和变量标记出来。
+- jinja2定界符
+  - {{...}} 用来标记变量
+  - {%...%} 用来标记语句，比如if语句
+  - {#...#} 用来写注释
+  - {% endif %}用来声明关闭if语句，大多数jinja2语句都需要声明关闭
+- jinja2过滤器
+  - Jinja2模板中的过滤器起到一个简单的渲染作用，它可以把接收到的数据经过简单的处理重新显示。
+  - 用法：{{ 变量名|过滤器名 }}，如:{{ movies|length }}
+  - 过滤器介绍
+    - capitalize ,将字符串的首字母大写，其余字母转换成小写。如果字符串的首字母是非英文字母，则不进行首字母大小写转换，仅仅将字符串中其他英文字母转换成小写。
+    - lower，将字符串中的英文字母转换成小写。
+    - upper，将字符串中的英文字母转换成大写。
+    - title，将字符串中的每个单词的首字母大写，并将单词的其他字母变成小写。
+    - trim，去掉字符串的前后空格。
+    - striptags，去掉字符串中所有的HTML标签。
+    - abs，转化成绝对值
+    - default(value,default_value,boolean=false)，如果当前变量没有值，则会使用参数中的值来代替。name|default(‘xiaoli’)——如果 name 不存在，则会使用 xiaoli 来替代。boolean=False 默认是在只有这个变量为 undefined 的时候才会使用default 中的值，如果想使用 python 的形式判断是否为 false，则可以传递 boolean=true。也可以使用 or 来替换。
+    - escape或e，转义字符，会将<、>等符号转义成HTML中的符号。例如：content|escape 或 content|e。
+    - first(value)	返回一个序列的第一个元素。
+    - format(value,*arags,**kwargs)，格式化字符串。例如以下代码：{{ “%s” - “%s”|format(‘Hello?’,“Foo!”) }} 将输出：Hello? - Foo!
+    - last(value)	返回一个序列的最后一个元素。示例：names|last。
+    - length(value)	返回一个序列或者字典的长度。示例：names|length。
+    - join(value,d=’+’)	将一个序列用d这个参数的值拼接成字符串。
+    - int，将值转换为 int 类型。
+    - float，将值转换为 float 类型。
+    - string(value)	将变量转换成字符串。
+    - wordcount(s)	计算一个长字符串中单词的个数。
+    - replace(value,old,new)	替换将 old 替换为 new 的字符串。
+    - truncate(value,length=255,killwords=False)	截取 length 长度的字符串。
+
+- jinja2用法：
+  将模板文件（即html文件）存入根目录下的templates文件夹中（模板文件可使用app.py即主文件中的变量），使用flask中的render_templates函数调用模板文件并传入模板文件中所需的参数。
+  如：
+  ~~~python
+  @app.route('/')
+  def index():
+    return render_template('index.html', name=name, movies=movies)
+  ~~~
+- 在传入 render_template() 函数的关键字参数中，左边的 movies 是模板中使用的变量名称，右边的 movies 则是该变量指向的实际对象。这里传入模板的name 是字符串， movies 是列表，但能够在模板里使用的不只这两种 Python
+数据结构，也可以传入元组、字典、函数等。
+- render_template() 函数在调用时会识别并执行 index.html 里所有的 Jinja2 语句，返回渲染好的模板内容。在返回的页面中，变量会被替换为实际的值（包括定界符），语句（及定界符）则会在执行后被移除（注释也会一并移除）。即渲染后页面的源码html是不包含jinja2语句和注释的。
+- 使用faker可实现自动生成虚拟数据，详见https://github.com/joke2k/faker。
+  
+---
+### 静态文件
+静态文件（static files）和模板概念相反，指的是内容不需要动态生成的文件。比如图片、CSS 文件和 JavaScript 脚本等。
+- 生成静态文件url
+  在 **HTML 文件**里，引入这些静态文件需要给出资源所在的 URL。为了更加灵活，这些文件的 URL 可以通过 Flask 提供的 url_for() 函数来生成。
+  例如：在 static 文件夹的根目录下面放了一个 foo.jpg 文件，下面的调用可以获取它的 URL：
+  ~~~
+   <img src="{{ url_for('static', filename='foo.jpg') }}">
+  ~~~
+- 添加favicon
+  Favicon（favourite icon）是显示在标签页和书签栏的网站头像。需要准备一个ICO、PNG 或 GIF 格式的图片，大小一般为16×16、32×32、48×48 或 64×64 像素。把这个图片放到static 目录下，在html模板的头部引用它。
+- 添加图片
+  在 static 目录下面创建一个子文件夹 images，把图片都放到这个文件夹里。
+  ~~~
+  <img alt="Avatar" src="{{ url_for('static', filename='images/avatar.png') }}">
+  ~~~
+  如上在index.html文件中合适的位置上加入图片或gif动图。
+- 添加css
+  在static 目录下创建一个 CSS 文件 style.css定义页面样式。
+  接着在页面的 <head> 标签内引入这个 CSS 文件：
+  ~~~
+  <head>
+  ...
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+  </head>
+  ~~~
+  最后要为对应的元素设置 **class** 属性值，以便和对应的 CSS 定义关联起来。
+  ~~~
+  <img alt="foot_image" class='foot_image' src="{{ url_for('static', filename='images/微信图片_20220706112817.gif') }}"/>
+  ~~~
+
+- 可以借助前端框架来完善页面样式，比如[Bootstrap](https://getbootstrap.com/)、[Semantic-UI](https://semantic-ui.com/)、[Foundation](https://get.foundation/) 等。它们提供了大量的 CSS 定义和动态效果，使用起来非常简单。
+- 扩展 [Bootstrap-Flask](https://github.com/helloflask/bootstrap-flask) 可以简化在 Flask 项目里使用 Bootstrap 4 的步骤。
+
+### 数据库
